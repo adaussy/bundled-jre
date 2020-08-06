@@ -5,29 +5,36 @@
 
 	<groupId>name.abuchen.zulu</groupId>
 	<artifactId>jre</artifactId>
-	<version>11.0.4</version>
+	<version>14.0.2</version>
 	<packaging>pom</packaging>
 
 	<name>Bundled Oracle Java JRE</name>
-
+	<pluginRepositories>
+	  <pluginRepository>
+		<id>tycho-staged</id>
+		<url>https://oss.sonatype.org/content/repositories/orgeclipsetycho-1063/</url>
+	  </pluginRepository>
+	</pluginRepositories>
 	<properties>
-		<tycho-version>1.5.1</tycho-version>
+		<tycho-version>2.0.0</tycho-version>
 		<jarsigner.plugin.version>3.0.0</jarsigner.plugin.version>
 		<jarsigner.skip>true</jarsigner.skip>
+		<tpd.classifier>tp</tpd.classifier>
+		<tpd.path>targets/${tpd.classifier}</tpd.path>
+		<tpd.version>${project.version}</tpd.version>
 	</properties>
 
 	<modules>
 		<module>bundles</module>
 		<module>name.abuchen.zulu.jre.feature</module>
 		<module>updatesite</module>
-		<module>test</module>
 	</modules>
 
 	<repositories>
 		<repository>
 			<id>eclipse</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/eclipse/updates/4.9/R-4.9-201809060745</url>
+			<url>http://download.eclipse.org/releases/2020-06</url>
 		</repository>
 	</repositories>
 
@@ -86,7 +93,38 @@
 							<arch>x86_64</arch>
 						</environment>
 					</environments>
+					<target>
+							<artifact>
+								<groupId>name.abuchen.zulu</groupId>
+								<artifactId>jre</artifactId>
+								<version>${tpd.version}</version>
+								<classifier>${tpd.path}</classifier>
+							</artifact>
+					</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<inherited>false</inherited>
+				<executions>
+					<execution>
+						<id>attach-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>target.target</file>
+									<type>target</type>
+									<classifier>${tpd.path}</classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<pluginManagement>
