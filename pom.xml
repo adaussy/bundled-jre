@@ -5,7 +5,7 @@
 
 	<groupId>name.abuchen.zulu</groupId>
 	<artifactId>jre</artifactId>
-	<version>14.0.2</version>
+	<version>14.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Bundled Oracle Java JRE</name>
@@ -72,7 +72,6 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
-				<version>${tycho-version}</version>
 				<configuration>
 					<resolver>p2</resolver>
 					<pomDependencies>consider</pomDependencies>
@@ -117,7 +116,7 @@
 						<configuration>
 							<artifacts>
 								<artifact>
-									<file>target.target</file>
+									<file>${tpd.path}.target</file>
 									<type>target</type>
 									<classifier>${tpd.path}</classifier>
 								</artifact>
